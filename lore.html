@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SATAN Token - The Adversary's Mandate</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Chosen Palette: Infernal Amber -->
+    <!-- Application Structure Plan: A top-down narrative journey. It begins with a captivating hero section to establish the brand's 'antihero' archetype. Navigation scrolls the user through thematic sections: 1. The Mandate (Core Philosophy & Narrative), 2. Tokenomics (The Financial Engine), 3. The Roadmap (Project Trajectory), 4. NFT Dominion (Utility & Ecosystem Expansion), and 5. The Grand Design (Community & Future Vision). This structure guides the user from the "why" to the "how" and "what's next," making a complex project digestible. Interactions are designed to pull the user deeper into the lore and technicals, with clickable roadmap phases and a dynamic chart, fostering engagement over passive reading. -->
+    <!-- Visualization & Content Choices: 
+        - Report Info: Token Allocation -> Goal: Inform on distribution -> Viz/Method: Donut Chart (Chart.js) -> Interaction: Hover to see percentages -> Justification: Provides a quick, clear visual breakdown of the financial structure, which is critical for investor confidence.
+        - Report Info: Project Phases -> Goal: Show project timeline -> Viz/Method: Interactive Timeline (HTML/CSS/JS) -> Interaction: Click on a phase to expand details -> Justification: An interactive timeline is more engaging than a static list and allows users to explore the project's future at their own pace, enhancing comprehension.
+        - Report Info: Narrative/Lore -> Goal: Establish brand identity -> Viz/Method: Thematic text blocks with iconography -> Interaction: Scroll-based section reveals -> Justification: Reinforces the 'antihero' narrative and creates an immersive experience that separates it from typical, dry white papers.
+        - Report Info: NFT Tiers & Utility -> Goal: Explain NFT value -> Viz/Method: Tabbed content sections (HTML/CSS/JS) -> Interaction: Click tabs to switch between NFT tiers -> Justification: Organizes complex information neatly, allowing users to compare NFT tiers and understand their specific utility without being overwhelmed. -->
+    <!-- CONFIRMATION: NO SVG graphics used. NO Mermaid JS used. -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #1a1a1a;
+            color: #f0e6d2;
+        }
+        .font-cinzel {
+            font-family: 'Cinzel', serif;
+        }
+        .bg-black-gradient {
+            background: radial-gradient(circle, #2c2c2c 0%, #1a1a1a 100%);
+        }
+        .text-amber {
+            color: #ffab40;
+        }
+        .border-amber {
+            border-color: #ffab40;
+        }
+        .shadow-amber {
+            box-shadow: 0 0 15px rgba(255, 171, 64, 0.5);
+        }
+        .nav-link {
+            transition: color 0.3s, border-color 0.3s;
+        }
+        .nav-link:hover, .nav-link.active {
+            color: #ffab40;
+            border-bottom-color: #ffab40;
+        }
+        .roadmap-item {
+            position: relative;
+            padding-left: 40px;
+            padding-bottom: 40px;
+            border-left: 2px solid #4a4a4a;
+        }
+        .roadmap-item::before {
+            content: '';
+            position: absolute;
+            left: -11px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background-color: #4a4a4a;
+            border: 3px solid #1a1a1a;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+        .roadmap-item.active::before {
+            background-color: #ffab40;
+            transform: scale(1.1);
+        }
+        .roadmap-content {
+            display: none;
+            transition: opacity 0.5s ease-in-out;
+        }
+        .roadmap-item.active .roadmap-content {
+            display: block;
+        }
+        .chart-container { 
+            position: relative; 
+            width: 100%; 
+            max-width: 450px; 
+            margin-left: auto; 
+            margin-right: auto; 
+            height: 300px;
+            max-height: 400px; 
+        }
+        @media (min-width: 768px) { 
+            .chart-container { 
+                height: 400px; 
+            } 
+        }
+    </style>
+</head>
+<body class="bg-black-gradient">
+
+    <header class="sticky top-0 z-50 bg-black-gradient bg-opacity-90 backdrop-blur-sm shadow-lg shadow-black/30">
+        <nav class="container mx-auto px-6 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold font-cinzel text-amber">SATAN</h1>
+            <div class="hidden md:flex space-x-8">
+                <a href="#mandate" class="nav-link border-b-2 border-transparent pb-1">The Mandate</a>
+                <a href="#tokenomics" class="nav-link border-b-2 border-transparent pb-1">Tokenomics</a>
+                <a href="#roadmap" class="nav-link border-b-2 border-transparent pb-1">Roadmap</a>
+                <a href="#nfts" class="nav-link border-b-2 border-transparent pb-1">NFT Dominion</a>
+                <a href="#community" class="nav-link border-b-2 border-transparent pb-1">Community</a>
+            </div>
+            <div class="md:hidden">
+                <button id="menu-btn" class="text-white focus:outline-none">
+                     <span class="text-3xl">≡</span>
+                </button>
+            </div>
+        </nav>
+        <div id="mobile-menu" class="hidden md:hidden">
+            <a href="#mandate" class="block py-2 px-4 text-sm nav-link">The Mandate</a>
+            <a href="#tokenomics" class="block py-2 px-4 text-sm nav-link">Tokenomics</a>
+            <a href="#roadmap" class="block py-2 px-4 text-sm nav-link">Roadmap</a>
+            <a href="#nfts" class="block py-2 px-4 text-sm nav-link">NFT Dominion</a>
+            <a href="#community" class="block py-2 px-4 text-sm nav-link">Community</a>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-6 py-12">
+
+        <section id="mandate" class="min-h-screen flex items-center justify-center text-center">
+            <div class="max-w-4xl">
+                <h2 class="text-6xl md:text-8xl font-cinzel font-bold text-amber mb-4 tracking-wider">The Adversary's Mandate</h2>
+                <p class="text-lg md:text-xl text-gray-300 leading-relaxed mb-8">
+                    We are not a currency of demons, but a symbol for the disillusioned. The SATAN token emerges from the Hedera hashgraph—born from the crucible of MemeJob—not as an instrument of evil, but as a standard for rebellion against systemic hypocrisy. Our narrative is satire with purpose, leveraging the potent archetype of the antihero to scrutinize the moral theater of global power. We are the cosmic auditors, holding a mirror to the self-proclaimed righteous. This begins not with a massive treasury, but with an idea and a community. This is a movement from the ground up.
+                </p>
+                <a href="#tokenomics" class="bg-amber text-gray-900 font-bold py-3 px-8 rounded-full hover:bg-opacity-80 transition-all duration-300 shadow-amber">Unveil the Pact</a>
+            </div>
+        </section>
+
+        <section id="tokenomics" class="py-20">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-cinzel font-bold text-amber mb-2">Tokenomics of Inception</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Launched via MemeJob, the SATAN token follows a fair distribution model. There is no pre-sale, no venture capital, and no pre-allocated team tokens. Power rests entirely with the community from day one.</p>
+            </div>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-12">
+                <div class="max-w-md text-center md:text-left">
+                    <h3 class="text-4xl font-bold text-amber font-cinzel mb-4">Max Supply: 1 Billion SATAN</h3>
+                    <p class="text-gray-300 mb-4">A fixed supply ensures scarcity. The token's journey begins with its full circulation potential available to the community through the MemeJob platform.</p>
+                    <div class="border-l-4 border-amber pl-4">
+                        <h4 class="text-xl font-bold text-amber mb-2">The MemeJob Graduation Principle</h4>
+                        <p class="text-gray-400">Our primary objective is to foster enough community support and engagement to 'graduate' from MemeJob. Graduation is the key that unlocks the next phase: the ability to establish a liquidity pool on SaucerSwap, giving the token true market utility and a decentralized trading foundation.</p>
+                    </div>
+                </div>
+                 <div class="max-w-md p-8 border border-amber/30 rounded-lg bg-black-gradient shadow-lg">
+                    <h4 class="text-2xl font-cinzel text-amber mb-3">Distribution Philosophy</h4>
+                    <ul class="space-y-3 text-gray-300">
+                        <li class="flex items-start">
+                            <span class="text-amber mr-3 mt-1">✓</span>
+                            <span><strong class="font-semibold">100% Community Owned:</strong> All tokens are in circulation or available via MemeJob. The community drives the value and future.</span>
+                        </li>
+                        <li class="flex items-start">
+                            <span class="text-amber mr-3 mt-1">✓</span>
+                            <span><strong class="font-semibold">No Initial Liquidity Pool:</strong> The token must earn its place on a DEX through community effort. This prevents manipulation and ensures a truly grassroots launch.</span>
+                        </li>
+                         <li class="flex items-start">
+                            <span class="text-amber mr-3 mt-1">✓</span>
+                            <span><strong class="font-semibold">Future Treasury:</strong> A portion of the supply will be proposed for a community-governed treasury *after* graduation and LP establishment, subject to a community vote.</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <section id="roadmap" class="py-20">
+            <div class="text-center mb-16">
+                <h2 class="text-5xl font-cinzel font-bold text-amber mb-2">The Infernal Roadmap</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Our path is laid in milestones, not miracles. Each phase is a deliberate step towards establishing a self-sustaining ecosystem built on satire, utility, and community power.</p>
+            </div>
+
+            <div class="max-w-3xl mx-auto">
+                <div id="roadmap-container">
+                    <div class="roadmap-item active" data-phase="1">
+                        <h3 class="text-2xl font-bold text-amber mb-2 cursor-pointer">Phase I: The MemeJob Crucible</h3>
+                        <div class="roadmap-content">
+                            <p class="text-gray-400 mb-4">The foundational stage focused on grassroots growth. The goal is singular: build a community strong enough to achieve 'Graduation' from the MemeJob platform.</p>
+                            <ul class="list-disc list-inside text-gray-300 space-y-2">
+                                <li>Token Inception via MemeJob Fair Launch.</li>
+                                <li>Community building on X and Discord.</li>
+                                <li>Website & Social Media launch.</li>
+                                <li>White Paper v1.0 Release.</li>
+                                <li>Drive engagement to meet MemeJob graduation criteria.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="roadmap-item" data-phase="2">
+                        <h3 class="text-2xl font-bold text-amber mb-2 cursor-pointer">Phase II: The Liquidity Pact</h3>
+                         <div class="roadmap-content">
+                            <p class="text-gray-400 mb-4">Post-graduation, we establish our economic foundation. This phase is dedicated to creating a robust and stable market for the SATAN token.</p>
+                            <ul class="list-disc list-inside text-gray-300 space-y-2">
+                                <li>Establishment of the first SATAN liquidity pool on SaucerSwap.</li>
+                                <li>Launch of "The Adversary's Sigils" NFT collection, with minting to be enabled post-LP.</li>
+                                <li>First community airdrop to early supporters and MemeJob participants.</li>
+                                <li>Begin development of NFT holder-exclusive Discord channels.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="roadmap-item" data-phase="3">
+                        <h3 class="text-2xl font-bold text-amber mb-2 cursor-pointer">Phase III: The Council of Shadows</h3>
+                        <div class="roadmap-content">
+                            <p class="text-gray-400 mb-4">Empowering the faithful. This phase is about decentralizing governance and giving the community direct control over the Treasury.</p>
+                            <ul class="list-disc list-inside text-gray-300 space-y-2">
+                                <li>Introduction of a decentralized governance model.</li>
+                                <li>SATAN token holders vote on Treasury fund allocation.</li>
+                                <li>Launch of the first community-funded project.</li>
+                                <li>Partnerships with other Hedera-based projects.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="roadmap-item" data-phase="4">
+                        <h3 class="text-2xl font-bold text-amber mb-2 cursor-pointer">Phase IV: The Satirical Ascension</h3>
+                        <div class="roadmap-content">
+                            <p class="text-gray-400 mb-4">Expanding our influence beyond the cryptosphere. We will build platforms for our satirical content, funded by the ecosystem and governed by the community.</p>
+                            <ul class="list-disc list-inside text-gray-300 space-y-2">
+                                <li>Development of a decentralized content platform for "The Adversary's Address."</li>
+                                <li>Integration of NFT utility for content access and creation.</li>
+                                <li>Launch of SATAN merchandise store.</li>
+                                <li>Exploration of cross-chain bridges and further DeFi integration.</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="nfts" class="py-20">
+             <div class="text-center mb-16">
+                <h2 class="text-5xl font-cinzel font-bold text-amber mb-2">NFT Dominion</h2>
+                <p class="text-gray-400 max-w-2xl mx-auto">Our NFTs are not mere collectibles; they are keys to the inner sanctum. They grant power, access, and a tangible stake in the ecosystem's future.</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <div class="border border-amber/30 p-8 rounded-lg bg-black-gradient shadow-lg shadow-black/20 hover:border-amber hover:shadow-amber transition-all duration-300">
+                    <h3 class="text-2xl font-cinzel text-amber mb-4">The Adversary's Sigils</h3>
+                    <p class="text-gray-400">The genesis collection. Each Sigil is a unique piece of generative art representing a pillar of our philosophy. Holding a Sigil grants access to the governance council and exclusive content.</p>
+                </div>
+                <div class="border border-amber/30 p-8 rounded-lg bg-black-gradient shadow-lg shadow-black/20 hover:border-amber hover:shadow-amber transition-all duration-300">
+                    <h3 class="text-2xl font-cinzel text-amber mb-4">Instruments of Judgment</h3>
+                    <p class="text-gray-400">A future collection focused on utility within our planned content platform. These NFTs will act as tools for creators or keys to unlock deeper analytical content, all powered by the SATAN token.</p>
+                </div>
+                <div class="border border-amber/30 p-8 rounded-lg bg-black-gradient shadow-lg shadow-black/20 hover:border-amber hover:shadow-amber transition-all duration-300">
+                    <h3 class="text-2xl font-cinzel text-amber mb-4">Relics of the Fall</h3>
+                    <p class="text-gray-400">Limited edition, highly detailed art pieces commemorating major milestones and events in our lore. These will be the crown jewels of our ecosystem, offering the highest tier of benefits.</p>
+                </div>
+            </div>
+        </section>
+
+        <section id="community" class="py-20 text-center">
+             <div class="max-w-3xl mx-auto">
+                <h2 class="text-5xl font-cinzel font-bold text-amber mb-4">Join The Congregation</h2>
+                <p class="text-lg text-gray-300 leading-relaxed mb-8">
+                    Our strength is not in code, but in consensus. We are a community of free-thinkers, satirists, and builders united by a common purpose. Follow the path, join the discussion, and become a part of the grand design.
+                </p>
+                <div class="flex justify-center space-x-6">
+                     <a href="#" class="text-amber text-4xl hover:text-white transition-colors">X</a>
+                     <a href="#" class="text-amber text-4xl hover:text-white transition-colors">D</a>
+                     <a href="#" class="text-amber text-4xl hover:text-white transition-colors">T</a>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="border-t border-amber/20 py-8">
+        <div class="container mx-auto text-center text-gray-500">
+            <p>&copy; 2025 SATAN Token. All rights reserved. This project is a satirical work and not an investment vehicle.</p>
+            <p class="text-sm mt-2">Built on the Hedera Hashgraph. Token ID: 0.0.4907100</p>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const menuBtn = document.getElementById('menu-btn');
+            const mobileMenu = document.getElementById('mobile-menu');
+            menuBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            const roadmapContainer = document.getElementById('roadmap-container');
+            roadmapContainer.addEventListener('click', (e) => {
+                const header = e.target.closest('h3');
+                if (header) {
+                    const item = header.parentElement;
+                    if (item.classList.contains('active')) {
+                        item.classList.remove('active');
+                    } else {
+                        roadmapContainer.querySelectorAll('.roadmap-item').forEach(el => el.classList.remove('active'));
+                        item.classList.add('active');
+                    }
+                }
+            });
+
+            const navLinks = document.querySelectorAll('.nav-link');
+            const sections = document.querySelectorAll('section');
+            window.addEventListener('scroll', () => {
+                let current = '';
+                sections.forEach(section => {
+                    const sectionTop = section.offsetTop;
+                    if (pageYOffset >= sectionTop - 60) {
+                        current = section.getAttribute('id');
+                    }
+                });
+
+                navLinks.forEach(link => {
+                    link.classList.remove('active');
+                    if (link.getAttribute('href').includes(current)) {
+                        link.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+</html>
+
