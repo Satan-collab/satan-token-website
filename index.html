@@ -1,0 +1,622 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SATAN Token - Hypocrisy Has a New Enemy</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Merriweather:wght@400&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --charcoal-grey: #1a1a1a;
+            --white: #ffffff;
+            --off-white: #f0f0f0;
+            --gold-accent: #D4AF37;
+            --red-accent: #8B0000;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body, html {
+            height: 100%;
+            width: 100%;
+            font-family: sans-serif; /* Fallback */
+        }
+
+        .hero-section {
+            width: 100vw;
+            height: 100vh;
+            background-color: var(--charcoal-grey);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-background-image {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('goat.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.15; /* Faded effect */
+            z-index: 1;
+        }
+
+        .hero-background-image::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4); /* Dark overlay for text readability */
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: var(--white);
+            padding: 20px;
+            max-width: 900px; /* Limit content width */
+        }
+
+        .headline {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 4.5em;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            line-height: 1.1;
+        }
+
+        .mantra {
+            font-family: 'Merriweather', serif;
+            font-size: 1.5em;
+            color: var(--off-white);
+            margin-bottom: 40px;
+            line-height: 1.6;
+        }
+
+        .button-group {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+        }
+
+        .cta-button {
+            display: inline-block;
+            padding: 15px 30px;
+            border-radius: 5px;
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            min-width: 200px;
+        }
+
+        .cta-button.primary {
+            background-color: var(--gold-accent);
+            color: var(--charcoal-grey);
+            border: 2px solid var(--gold-accent);
+        }
+
+        .cta-button.primary:hover {
+            background-color: var(--white);
+            border-color: var(--white);
+            color: var(--charcoal-grey);
+        }
+
+        .cta-button.secondary {
+            background-color: transparent;
+            color: var(--white);
+            border: 2px solid var(--white);
+        }
+
+        .cta-button.secondary:hover {
+            background-color: var(--white);
+            color: var(--charcoal-grey);
+        }
+
+        .manifesto-section {
+            background-color: #121212; /* Slightly different dark shade */
+            color: var(--white);
+            padding: 60px 20px; /* Generous padding top/bottom, some side padding */
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1); /* Subtle separator */
+        }
+
+        .manifesto-section .container {
+            max-width: 800px;
+            margin: 0 auto; /* Center the container */
+            padding: 0 20px; /* Responsive padding */
+        }
+
+        .manifesto-section h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 3em; /* Slightly smaller than hero headline */
+            color: var(--white);
+            margin-bottom: 30px;
+            line-height: 1.2;
+        }
+
+        .manifesto-section p {
+            font-family: 'Merriweather', serif;
+            font-size: 1.2em;
+            color: var(--off-white);
+            line-height: 1.8; /* Generous line spacing */
+            margin-bottom: 0;
+        }
+
+        /* Manifesto Responsiveness */
+        @media (max-width: 768px) {
+            .manifesto-section h2 {
+                font-size: 2em;
+            }
+
+            .manifesto-section p {
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .manifesto-section h2 {
+                font-size: 1.8em;
+            }
+
+            .manifesto-section p {
+                font-size: 0.9em;
+            }
+            .manifesto-section {
+                padding: 40px 15px;
+            }
+        }
+
+        /* Responsiveness */
+        @media (max-width: 768px) {
+            .headline {
+                font-size: 2.5em;
+            }
+
+            .mantra {
+                font-size: 1.1em;
+            }
+
+            .button-group {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .cta-button {
+                width: 80%; /* Make buttons take more width on mobile */
+                margin: 0 auto; /* Center buttons */
+            }
+        }
+
+        @media (max-width: 480px) {
+            .headline {
+                font-size: 2em;
+            }
+
+            .mantra {
+                font-size: 1em;
+            }
+        }
+
+        /* Pillars of Trust Section Styling */
+        .pillars-of-trust-section {
+            background-color: var(--charcoal-grey);
+            color: var(--white);
+            padding: 60px 20px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .pillars-of-trust-section .container {
+            max-width: 1200px; /* Wider container for three columns */
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .pillars-of-trust-section h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 3em;
+            color: var(--white);
+            margin-bottom: 40px; /* More space below title */
+            line-height: 1.2;
+        }
+
+        .pillars-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* Three equal columns */
+            gap: 30px; /* Spacing between columns */
+            margin-top: 30px;
+        }
+
+        .pillar-item {
+            background-color: #121212; /* Slightly lighter dark background for items */
+            padding: 30px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center; /* Center content within pillar item */
+            text-align: center;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .pillar-item:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+        }
+
+        .pillar-icon {
+            font-size: 3em; /* Large icon size */
+            color: var(--gold-accent);
+            margin-bottom: 20px;
+            height: 60px; /* Fixed height for icons to prevent layout shifts */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .pillar-item h3 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 1.8em;
+            color: var(--white);
+            margin-bottom: 15px;
+            line-height: 1.3;
+        }
+
+        .pillar-item p {
+            font-family: 'Merriweather', serif;
+            font-size: 1.1em;
+            color: var(--off-white);
+            line-height: 1.7;
+            margin-bottom: 20px;
+            flex-grow: 1; /* Allow paragraph to take available space */
+        }
+
+        .action-link {
+            display: inline-block;
+            color: var(--gold-accent);
+            text-decoration: none;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 0.95em;
+            border-bottom: 2px solid transparent;
+            transition: border-color 0.3s ease;
+        }
+
+        .action-link:hover {
+            border-color: var(--gold-accent);
+        }
+
+        /* Responsiveness for Pillars of Trust */
+        @media (max-width: 992px) { /* Tablet view */
+            .pillars-grid {
+                grid-template-columns: repeat(2, 1fr); /* Two columns */
+            }
+        }
+
+        @media (max-width: 768px) { /* Mobile view */
+            .pillars-of-trust-section h2 {
+                font-size: 2.5em;
+            }
+
+            .pillars-grid {
+                grid-template-columns: 1fr; /* Single column */
+                gap: 20px;
+            }
+
+            .pillar-item {
+                padding: 25px;
+            }
+
+            .pillar-icon {
+                font-size: 2.5em;
+                margin-bottom: 15px;
+            }
+
+            .pillar-item h3 {
+                font-size: 1.5em;
+            }
+
+            .pillar-item p {
+                font-size: 1em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .pillars-of-trust-section h2 {
+                font-size: 2em;
+                margin-bottom: 30px;
+            }
+            .pillars-of-trust-section {
+                padding: 40px 15px;
+            }
+        }
+
+        /* Tokenomics Section Styling */
+        .tokenomics-section {
+            background-color: #121212; /* Slightly different dark shade */
+            color: var(--white);
+            padding: 60px 20px;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .tokenomics-section .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .tokenomics-section h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 700;
+            font-size: 3em;
+            color: var(--white);
+            margin-bottom: 40px;
+            line-height: 1.2;
+            text-align: center; /* Center the title */
+        }
+
+        .tokenomics-content {
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align items to the top */
+            gap: 50px; /* Space between columns */
+            flex-wrap: wrap; /* Allow columns to wrap on smaller screens */
+            margin-top: 30px;
+        }
+
+        .tokenomics-chart,
+        .token-allocation {
+            flex: 1; /* Distribute space equally */
+            min-width: 300px; /* Minimum width before wrapping */
+            max-width: 500px; /* Max width for each column */
+            text-align: left; /* Align text within columns to left */
+        }
+
+        .tokenomics-chart {
+            background-color: var(--charcoal-grey); /* Placeholder background */
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            min-height: 300px; /* Placeholder height for the chart */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: var(--off-white);
+            font-family: 'Merriweather', serif;
+            font-size: 1.2em;
+            padding: 20px;
+            position: relative; /* Needed for Chart.js responsiveness */
+            max-width: 400px; /* Limit chart width */
+            margin: 0 auto; /* Center the chart */
+        }
+
+        .token-allocation ul {
+            list-style: none; /* Remove default list styling */
+            padding: 0;
+        }
+
+        .token-allocation li {
+            background-color: var(--charcoal-grey);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 15px;
+            font-family: 'Merriweather', serif;
+            font-size: 1.1em;
+            color: var(--off-white);
+            line-height: 1.6;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .token-allocation li:last-child {
+            margin-bottom: 0;
+        }
+
+        .token-allocation li:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Tokenomics Responsiveness */
+        @media (max-width: 992px) {
+            .tokenomics-content {
+                flex-direction: column; /* Stack columns vertically */
+                align-items: center; /* Center items when stacked */
+                gap: 30px;
+            }
+
+            .tokenomics-chart,
+            .token-allocation {
+                max-width: 600px; /* Allow wider columns when stacked */
+                width: 100%;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .tokenomics-section h2 {
+                font-size: 2.5em;
+            }
+
+            .tokenomics-chart {
+                min-height: 250px;
+            }
+
+            .token-allocation li {
+                font-size: 1em;
+                padding: 15px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .tokenomics-section h2 {
+                font-size: 2em;
+                margin-bottom: 30px;
+            }
+            .tokenomics-section {
+                padding: 40px 15px;
+            }
+            .tokenomics-chart {
+                min-height: 200px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <section class="hero-section">
+        <div class="hero-background-image"></div>
+        <div class="content-wrapper">
+            <h1 class="headline">Hypocrisy Has a New Enemy.</h1>
+            <p class="mantra">Satan has returned not to bring damnation, but to expose the hell that hypocrites have already made of the world.</p>
+            <div class="button-group">
+                <a href="#" class="cta-button primary">Buy on SaucerSwap</a>
+                <a href="#" class="cta-button secondary">Read the Lore Paper</a>
+                <a href="https://x.com/SatanGTE" class="cta-button secondary">Follow on X</a>
+            </div>
+        </div>
+    </section>
+ 
+    <section class="manifesto-section">
+        <div class="container">
+            <h2>The Antihero's Mandate</h2>
+            <p>In a world cloaked in false piety and hidden agendas, a new force rises. SATAN is not merely a token; it is a declaration. A declaration against the sanctimonious, the corrupt, and the two-faced. We believe in raw truth, unfiltered and unapologetic. We are here to tear down the veils of deceit and expose the true nature of power, greed, and hypocrisy.</p>
+            <p>This isn't about good versus evil; it's about real versus fake. It's about unmasking those who preach virtue while practicing vice. Join us, and together, we will forge a community that values honesty above all, where the only dogma is truth, and the only sin is hypocrisy.</p>
+        </div>
+    </section>
+
+    <section class="pillars-of-trust-section">
+        <div class="container">
+            <h2>Pillars of Unholy Truth</h2>
+            <div class="pillars-grid">
+                <div class="pillar-item">
+                    <div class="pillar-icon">🔥</div>
+                    <h3>Transparency</h3>
+                    <p>Every transaction, every decision, every move is laid bare. No hidden fees, no secret allocations, no shadowy figures pulling strings. We operate in the harsh light of truth, where deceit withers and dies.</p>
+                    <a href="#" class="action-link">Verify On-Chain</a>
+                </div>
+                <div class="pillar-item">
+                    <div class="pillar-icon">😈</div>
+                    <h3>Community Governance</h3>
+                    <p>The power belongs to the collective. Our holders dictate the path, ensuring that the project remains true to its anti-hypocrisy ethos. Your voice is the infernal roar that guides our mission.</p>
+                    <a href="#" class="action-link">Join the DAO</a>
+                </div>
+                <div class="pillar-item">
+                    <div class="pillar-icon">🛡️</div>
+                    <h3>Unyielding Security</h3>
+                    <p>Fortified against the forces of manipulation and fraud. Our smart contracts are audited, our systems robust, ensuring that your assets are protected from the predations of the corrupt.</p>
+                    <a href="#" class="action-link">Audit Reports</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="tokenomics" class="tokenomics-section">
+        <div class="container">
+            <h2>Tokenomics: The Devil's Due</h2>
+            <div class="tokenomics-content">
+                <div class="tokenomics-chart">
+                    <canvas id="tokenomicsPieChart"></canvas>
+                </div>
+                <div class="token-allocation">
+                    <ul>
+                        <li><strong>50% - Community Treasury:</strong> Empowering the collective, funding initiatives, and rewarding true believers.</li>
+                        <li><strong>20% - Development & Innovation:</strong> Fueling the evolution of our platform and expanding our reach.</li>
+                        <li><strong>15% - Marketing & Outreach:</strong> Spreading the word, unmasking hypocrisy, and growing our legion.</li>
+                        <li><strong>10% - Liquidity Pool:</strong> Ensuring stability and accessibility for all who seek the truth.</li>
+                        <li><strong>5% - Team & Advisors:</strong> Acknowledging the architects of this revolution, vested for long-term commitment.</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('tokenomicsPieChart').getContext('2d');
+
+        // Get CSS variables for colors
+        const style = getComputedStyle(document.body);
+        const charcoalGrey = style.getPropertyValue('--charcoal-grey').trim();
+        const white = style.getPropertyValue('--white').trim();
+        const goldAccent = style.getPropertyValue('--gold-accent').trim();
+        const redAccent = style.getPropertyValue('--red-accent').trim();
+        const offWhite = style.getPropertyValue('--off-white').trim();
+
+        new Chart(ctx, {
+            type: 'doughnut', // Doughnut looks a bit more modern
+            data: {
+                // These labels match your HTML list
+                labels: ['Community Treasury', 'Development & Innovation', 'Marketing & Outreach', 'Liquidity Pool', 'Team & Advisors'],
+                datasets: [{
+                    // This data matches the percentages in your HTML list
+                    data: [50, 20, 15, 10, 5],
+                    backgroundColor: [
+                        goldAccent,
+                        redAccent,
+                        '#6c757d', // A neutral grey for marketing
+                        offWhite,
+                        '#495057'  // A darker grey for team
+                    ],
+                    borderColor: '#121212', // Match section background
+                    borderWidth: 3,
+                    hoverOffset: 4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom', // Better for mobile
+                        labels: {
+                            color: offWhite,
+                            font: {
+                                family: 'Montserrat, sans-serif',
+                                size: 14
+                            },
+                            padding: 20
+                        }
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed !== null) {
+                                    label += context.parsed + '%';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    });
+    </script>
+</body>
+</html>
